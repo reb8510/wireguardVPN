@@ -1,37 +1,83 @@
-## Welcome to GitHub Pages
+# Cloud VPN-Docker Project
 
-You can use the [editor on GitHub](https://github.com/reb8510/wireguardVPN/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+**Installation Process**
+<p>Create a Digital Ocean account on digitalocean.com</p>
+<p>Create a DO Ubunto Droplet by navigating to the left side of the DO dashboard, click "Droplet", then create a Droplet with Ubunto Distributions, Basic plan, with Regular Intel, and choose either a SSH key or password (I chose Password). </p>
+<p>Once created, click on "Access" on the left side of the Droplet navigation bar. Once there, you will click "Launch Droplet Console" to launch the terminal for your Droplet. </p>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+**Setup Wireguard VPN server**
+<p>Once in the Droplet terminal, you will begin to setup Wireguard. Copy this below to run Wireguard</p>
+<pre><code>mkdir -p ~/wireguard/
+mkdir -p ~/wireguard/config/
+nano ~/wireguard/docker-compose.yml</code></pre>
 
-### Markdown
+<p>Copy below and put in the Compose file</p>
+<pre><code> version: '3.8'
+services:
+  wireguard:
+    container_name: wireguard
+    image: linuxserver/wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SERVERURL=143.198.97.82
+      - SERVERPORT=51820
+      - PEERS=pc1,pc2,phone1
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.0.0.0
+    ports:
+      - 51820:51820/udp
+    volumes:
+      - type: bind
+        source: ./config/
+        target: /config/
+      - type: bind
+        source: /lib/modules
+        target: /lib/modules
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1</code></pre>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<p>Start Wireguard by running this in the terminal</p>
+<pre><code>cd ~/wireguard/
+docker-compose up -d</code></pre>
 
-```markdown
-Syntax highlighted code block
+**Wireguard on phone**
+<p>Next you will connect your phone to Wireguard. Search Ipleak.net on a mobile browser and check your IP address and screenshot it. Download the Wireguard app on your mobile device to start the connection process. While the app is downloading, run the command below in your terminal.</p>
+<pre><code>docker-compose logs -f wireguard</code></pre>
+<p>Once Wireguard downloads, it will show a QR code in the terminal.</p>
+<p>Open the Wireguard app and create a tunnel through a QR code. Scan the QR code from your terminal and activate the tunnel. Refresh your mobile browser to see your new IP address.</p>
 
-# Header 1
-## Header 2
-### Header 3
+**Wireguard on laptop**
+<p>Next you will connect your laptop to Wireguard. Search Ipleak.net on a browser and check your IP address and screenshot it.</p>
+<p>Search for your .conf file with these commands in your terminal.</p>
+<pre><code>cd wireguard</code></pre>
+<pre><code>ls</code></pre>
+<pre><code>cd config/code></pre>
+<pre><code>ls</code></pre>
+<pre><code>cd peer_pc1</code></pre>
+<pre><code>ls</code></pre>
+<pre><code>nano peer_pc1.conf</code></pre>
+<p>Copy what is in your config file. Similar to mine below...</p>
+<pre><code>[Interface]
+Address = 10.0.0.2
+PrivateKey = 6CCItqWIdYT6gChq6PGEzISbr83Z9zI6/V1F0xAIWk4=
+ListenPort = 51820
+DNS = 10.0.0.1
 
-- Bulleted
-- List
+[Peer]
+PublicKey = XDXvbp5adasCk27g/ytwwicMz7Wnu5eKVId3lH58LAc=
+Endpoint = 143.198.97.82:51820
+AllowedIPs = 0.0.0.0/0, ::/0</code></pre>
 
-1. Numbered
-2. List
+<p>Create a new empty tunnel on Wireguard with a name, and your pasted config file. Activate your new tunnel once saved.</p>
+<p>Your IP address should have changed. Check your IP address and screenshot the new IP address.</p>
 
-**Bold** and _Italic_ and `Code` text
+<p>Thank you for reading! The screenshots are attached in the Harvey Lab 3 Submission :-)</p>
 
-[Link](url) and ![Image](src)
-```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/reb8510/wireguardVPN/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
