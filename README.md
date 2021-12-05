@@ -75,7 +75,7 @@ Endpoint = 143.198.97.82:51820
 AllowedIPs = 0.0.0.0/0, ::/0</code></pre>
 
 <p>Create a new empty tunnel on Wireguard with a name, and your pasted config file. Activate your new tunnel once saved.</p>
-<p>Your IP address should have changed. Check your IP address and screenshot the new IP address./p>
+<p>Your IP address should have changed. Check your IP address and screenshot the new IP address.</p>
 
 
 
