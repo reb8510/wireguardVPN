@@ -54,7 +54,7 @@ docker-compose up -d</code></pre>
 
 **Wireguard on laptop**
 <p>Next you will connect your laptop to Wireguard. Search Ipleak.net on a browser and check your IP address and screenshot it.</p>
-<p>Look for your .conf file by these commands in your terminal.</p>
+<p>Search for your .conf file with these commands in your terminal.</p>
 <pre><code>cd wireguard</code></pre>
 <pre><code>ls</code></pre>
 <pre><code>cd config/code></pre>
@@ -77,9 +77,7 @@ AllowedIPs = 0.0.0.0/0, ::/0</code></pre>
 <p>Create a new empty tunnel on Wireguard with a name, and your pasted config file. Activate your new tunnel once saved.</p>
 <p>Your IP address should have changed. Check your IP address and screenshot the new IP address.</p>
 
-
-
-
+<p>Thank you for reading! The screenshots are attached in the Harvey Lab 3 Submission :-)</p>
 
 
 
