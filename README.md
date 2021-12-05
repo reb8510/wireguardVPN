@@ -56,8 +56,8 @@ docker-compose up -d</code></pre>
 <p>Next you will connect your laptop to Wireguard. Search Ipleak.net on a browser and check your IP address and screenshot it.</p>
 <p>Search for your .conf file with these commands in your terminal.</p>
 <pre><code>cd wireguard</code></pre>
-<pre><code>ls</code></pre>
-<pre><code>cd config/code></pre>
+<pre><code>ls </code></pre>
+<pre><code>cd config</code></pre>
 <pre><code>ls</code></pre>
 <pre><code>cd peer_pc1</code></pre>
 <pre><code>ls</code></pre>
